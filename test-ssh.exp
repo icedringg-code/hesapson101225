@@ -1,0 +1,20 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set password "SyncArch2025!Secure"
+
+spawn ssh root@31.97.78.86 "echo 'SSH test successful'"
+expect {
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    "password:" {
+        send "$password\r"
+    }
+    timeout {
+        puts "Connection timeout"
+        exit 1
+    }
+}
+expect eof
