@@ -1,0 +1,54 @@
+#!/usr/bin/expect -f
+
+set timeout 120
+set password "00203549Rk.."
+
+spawn scp -o StrictHostKeyChecking=no dist-update.tar.gz root@31.97.78.86:/tmp/dist-update.tar.gz
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "Timeout during scp"; exit 1 }
+}
+expect eof
+
+spawn ssh -o StrictHostKeyChecking=no root@31.97.78.86
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "Timeout during ssh"; exit 1 }
+}
+
+expect "#"
+send "cd /var/www/syncarch\r"
+expect "#"
+
+send "rm -rf dist\r"
+expect "#"
+
+send "mkdir -p dist\r"
+expect "#"
+
+send "cd dist\r"
+expect "#"
+
+send "tar -xzf /tmp/dist-update.tar.gz\r"
+expect "#"
+
+send "ls -la assets/ | grep index\r"
+expect "#"
+
+send "rm /tmp/dist-update.tar.gz\r"
+expect "#"
+
+send "chown -R www-data:www-data /var/www/syncarch/dist\r"
+expect "#"
+
+send "chmod -R 755 /var/www/syncarch/dist\r"
+expect "#"
+
+send "systemctl reload nginx\r"
+expect "#"
+
+send "echo '=== UPDATE DEPLOYED ==='\r"
+expect "#"
+
+send "exit\r"
+expect eof
