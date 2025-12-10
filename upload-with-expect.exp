@@ -1,10 +1,10 @@
 #!/usr/bin/expect -f
 
 set timeout 120
-set password "SyncArch2025!Secure"
+set password "00203549Rk.."
 
 # Upload file
-spawn scp -o StrictHostKeyChecking=no dist-production.tar.gz root@31.97.78.86:/tmp/
+spawn scp -o StrictHostKeyChecking=no dist-production-real.tar.gz root@31.97.78.86:/tmp/dist-production.tar.gz
 expect {
     "password:" { send "$password\r" }
     timeout { puts "Timeout during scp"; exit 1 }
@@ -46,7 +46,7 @@ expect "#"
 send "systemctl reload nginx\r"
 expect "#"
 
-send "echo 'Aktif veriler yuklendi!'\r"
+send "echo '=== DEPLOYMENT COMPLETE ==='\r"
 expect "#"
 
 send "exit\r"
