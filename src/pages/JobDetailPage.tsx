@@ -311,15 +311,27 @@ export default function JobDetailPage({ jobId, onBack, onCompanyClick }: JobDeta
                       <span className="font-semibold">Her İşverene Düşen Pay:</span> {formatCurrency(stats.totalExpense / employers.length)}
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
-                      <p className="text-xs text-gray-600">
-                        <span className="font-semibold">Toplam Nakit/Havale Payı:</span> {formatCurrency(employers.reduce((sum, emp) => sum + (emp.cashPayments || 0), 0))}
-                      </p>
-                      <p className="text-xs text-gray-600">
-                        <span className="font-semibold">Toplam Çek Payı:</span> {formatCurrency(employers.reduce((sum, emp) => sum + (emp.checkPayments || 0), 0))}
-                      </p>
-                      <p className="text-xs text-gray-600">
-                        <span className="font-semibold">Toplam Ödenmemiş Çek:</span> {formatCurrency(employers.reduce((sum, emp) => sum + (emp.unpaidCheckDebt || 0), 0))}
-                      </p>
+                      <div className="bg-white rounded p-2">
+                        <p className="text-xs text-gray-600">
+                          <span className="font-semibold">Toplam Nakit/Havale Payı:</span> {formatCurrency(employers.reduce((sum, emp) => sum + (emp.cashPayments || 0), 0))}
+                        </p>
+                        <p className="text-xs text-blue-600 mt-1">
+                          <span className="font-semibold">Her İşverene Düşen:</span> {formatCurrency((stats.totalExpense - employers.reduce((sum, emp) => sum + (emp.checkPayments || 0), 0)) / employers.length)}
+                        </p>
+                      </div>
+                      <div className="bg-white rounded p-2">
+                        <p className="text-xs text-gray-600">
+                          <span className="font-semibold">Toplam Çek Payı:</span> {formatCurrency(employers.reduce((sum, emp) => sum + (emp.checkPayments || 0), 0))}
+                        </p>
+                        <p className="text-xs text-purple-600 mt-1">
+                          <span className="font-semibold">Her İşverene Düşen:</span> {formatCurrency(employers.reduce((sum, emp) => sum + (emp.checkPayments || 0), 0) / employers.length)}
+                        </p>
+                      </div>
+                      <div className="bg-white rounded p-2">
+                        <p className="text-xs text-gray-600">
+                          <span className="font-semibold">Toplam Ödenmemiş Çek:</span> {formatCurrency(employers.reduce((sum, emp) => sum + (emp.unpaidCheckDebt || 0), 0))}
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <div className="space-y-4">
