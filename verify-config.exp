@@ -1,0 +1,20 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set password "00203549Rk.."
+
+spawn ssh -o StrictHostKeyChecking=no root@31.97.78.86
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "Timeout"; exit 1 }
+}
+
+expect "#"
+send "grep 'root ' /etc/nginx/sites-available/syncarch | grep -v '#'\r"
+expect "#"
+
+send "grep 'root ' /etc/nginx/sites-enabled/syncarch | grep -v '#'\r"
+expect "#"
+
+send "exit\r"
+expect eof

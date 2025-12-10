@@ -1,0 +1,26 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set password "00203549Rk.."
+
+spawn ssh -o StrictHostKeyChecking=no root@31.97.78.86
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "Timeout"; exit 1 }
+}
+
+expect "#"
+send "systemctl restart nginx\r"
+expect "#"
+
+send "systemctl status nginx | head -10\r"
+expect "#"
+
+send "sleep 2\r"
+expect "#"
+
+send "curl -s http://localhost/index.html | grep -o 'index-\[^\"\]*\\.js'\r"
+expect "#"
+
+send "exit\r"
+expect eof

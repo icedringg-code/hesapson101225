@@ -1,0 +1,17 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set password "00203549Rk.."
+
+spawn ssh -o StrictHostKeyChecking=no root@31.97.78.86
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "Timeout"; exit 1 }
+}
+
+expect "#"
+send "grep -o 'index-\[^\"\]*\\.js' /var/www/syncarch/dist/index.html\r"
+expect "#"
+
+send "exit\r"
+expect eof

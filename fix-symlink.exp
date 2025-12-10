@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set password "00203549Rk.."
+
+spawn ssh -o StrictHostKeyChecking=no root@31.97.78.86
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "Timeout"; exit 1 }
+}
+
+expect "#"
+send "ls -la /etc/nginx/sites-enabled/\r"
+expect "#"
+
+send "ln -sf /etc/nginx/sites-available/syncarch /etc/nginx/sites-enabled/syncarch\r"
+expect "#"
+
+send "ls -la /etc/nginx/sites-enabled/ | grep syncarch\r"
+expect "#"
+
+send "nginx -t\r"
+expect "#"
+
+send "systemctl restart nginx\r"
+expect "#"
+
+send "echo '=== SYMLINK CREATED AND NGINX RESTARTED ==='\r"
+expect "#"
+
+send "exit\r"
+expect eof

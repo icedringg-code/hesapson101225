@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+
+set timeout 60
+set password "00203549Rk.."
+
+spawn ssh -o StrictHostKeyChecking=no root@31.97.78.86
+expect {
+    "password:" { send "$password\r" }
+    timeout { puts "Timeout"; exit 1 }
+}
+
+expect "#"
+send "sed -i 's|root /var/www/syncarch;|root /var/www/syncarch/dist;|g' /etc/nginx/sites-available/syncarch\r"
+expect "#"
+
+send "cat /etc/nginx/sites-available/syncarch | grep 'root /var'\r"
+expect "#"
+
+send "nginx -t\r"
+expect "#"
+
+send "systemctl reload nginx\r"
+expect "#"
+
+send "echo '=== NGINX FIXED AND RELOADED ==='\r"
+expect "#"
+
+send "exit\r"
+expect eof
