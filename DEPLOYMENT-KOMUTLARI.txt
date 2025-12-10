@@ -1,0 +1,78 @@
+╔═══════════════════════════════════════════════════════════╗
+║     SyncArch VPS Deployment - Manuel Komutlar            ║
+║              syncarch.xyz (v1.2.0)                       ║
+╚═══════════════════════════════════════════════════════════╝
+
+📦 PAKET HAZIR: syncarch-vps-latest.tar.gz (498 KB)
+
+VPS Bilgileri:
+  IP: 31.97.78.86
+  Domain: syncarch.xyz
+  User: root
+  Şifre: 00203549Rk..
+
+══════════════════════════════════════════════════════════
+
+🚀 DEPLOYMENT ADIMLARI
+
+1️⃣  PAKET YÜKLEME (Şifre girilecek)
+──────────────────────────────────────────────────────────
+
+scp syncarch-vps-latest.tar.gz root@31.97.78.86:/tmp/
+
+
+2️⃣  DEPLOYMENT ÇALIŞITIRMA (Şifre girilecek)
+──────────────────────────────────────────────────────────
+
+ssh root@31.97.78.86
+
+
+3️⃣  VPS'TE ÇALIŞTIRILACAKcd /var/www/syncarch || mkdir -p /var/www/syncarch && cd /var/www/syncarch
+
+BACKUP=backup-$(date +%Y%m%d-%H%M%S)
+mkdir -p "$BACKUP"
+[ -d dist ] && cp -r dist/ "$BACKUP/" && echo "✓ Yedek: $BACKUP"
+
+tar -xzf /tmp/syncarch-vps-latest.tar.gz -C /var/www/syncarch
+rm -f /tmp/syncarch-vps-latest.tar.gz
+echo "✓ Dosyalar çıkarıldı"
+
+npm install --production --silent
+echo "✓ Bağımlılıklar kuruldu"
+
+pm2 restart syncarch || pm2 start server/index.js --name syncarch
+pm2 save
+echo "✓ PM2 güncellendi"
+
+nginx -t && systemctl reload nginx
+echo "✓ Nginx yenilendi"
+
+echo ""
+echo "✅ DEPLOYMENT TAMAMLANDI!"
+pm2 list
+
+exit
+
+
+══════════════════════════════════════════════════════════
+
+✨ DEPLOYMENT SONRASI
+
+Uygulamanız yayında:
+  🌐 https://syncarch.xyz
+  🌐 http://31.97.78.86
+
+Yeni Özellikler:
+  ✓ Türk piyasası API entegrasyonu
+  ✓ Gerçek zamanlı altın fiyatları (5,746.26 ₺)
+  ✓ Güncel döviz kurları (USD: 42.54 ₺, EUR: 49.57 ₺)
+  ✓ Otomatik fallback mekanizması
+
+Test:
+  curl -I https://syncarch.xyz
+  curl https://syncarch.xyz/api/statistics
+
+Loglar:
+  ssh root@31.97.78.86 'pm2 logs syncarch'
+
+══════════════════════════════════════════════════════════

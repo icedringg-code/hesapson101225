@@ -1,0 +1,106 @@
+#!/usr/bin/expect -f
+
+set timeout 300
+
+# VPS bilgileri
+set vps_ip "31.97.78.86"
+set vps_user "root"
+set vps_password "00203549Rk.."
+set package_file "syncarch-vps-latest.tar.gz"
+
+puts "\n🚀 SyncArch VPS Deployment Başlıyor...\n"
+
+# 1. Dosyayı yükle
+puts "📤 1/3 - Paket yükleniyor..."
+spawn scp -o StrictHostKeyChecking=no $package_file ${vps_user}@${vps_ip}:/tmp/
+expect {
+    "password:" {
+        send "${vps_password}\r"
+        expect eof
+    }
+    timeout {
+        puts "\n❌ Dosya yükleme timeout!"
+        exit 1
+    }
+}
+
+puts "✓ Paket yüklendi\n"
+
+# 2. Deployment komutlarını çalıştır
+puts "🔧 2/3 - Deployment çalıştırılıyor..."
+spawn ssh -o StrictHostKeyChecking=no ${vps_user}@${vps_ip}
+expect {
+    "password:" {
+        send "${vps_password}\r"
+        expect "# "
+    }
+    timeout {
+        puts "\n❌ SSH bağlantı timeout!"
+        exit 1
+    }
+}
+
+# Deployment komutları
+send "cd /var/www/syncarch\r"
+expect "# "
+
+send "BACKUP_DIR=\"backup-\$(date +%Y%m%d-%H%M%S)\"\r"
+expect "# "
+
+send "mkdir -p \$BACKUP_DIR\r"
+expect "# "
+
+send "\[ -d \"dist\" \] && cp -r dist \$BACKUP_DIR/ && echo \"✓ Yedek alındı: \$BACKUP_DIR\"\r"
+expect "# "
+
+send "tar -xzf /tmp/$package_file -C /var/www/syncarch\r"
+expect "# "
+
+send "rm -f /tmp/$package_file\r"
+expect "# "
+
+send "echo \"✓ Dosyalar çıkarıldı\"\r"
+expect "# "
+
+send "npm install --production\r"
+expect {
+    "# " {
+        send "echo \"✓ Bağımlılıklar kuruldu\"\r"
+        expect "# "
+    }
+    timeout {
+        puts "\n⚠️  npm install timeout, devam ediliyor..."
+    }
+}
+
+send "pm2 restart syncarch || pm2 start server/index.js --name syncarch\r"
+expect "# "
+
+send "pm2 save\r"
+expect "# "
+
+send "echo \"✓ PM2 servisi güncellendi\"\r"
+expect "# "
+
+send "nginx -t && systemctl reload nginx\r"
+expect "# "
+
+send "echo \"✓ Nginx yenilendi\"\r"
+expect "# "
+
+send "echo \"\n📊 Servis Durumu:\"\r"
+expect "# "
+
+send "pm2 list\r"
+expect "# "
+
+send "echo \"\n🌐 Deployment Tamamlandı!\"\r"
+expect "# "
+
+send "echo \"   • https://syncarch.xyz\"\r"
+expect "# "
+
+send "exit\r"
+expect eof
+
+puts "\n✅ DEPLOYMENT BAŞARILI!\n"

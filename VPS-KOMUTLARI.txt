@@ -1,0 +1,53 @@
+=== VPS'DE ÇALIŞTIRIN (Şu anda buradasınız) ===
+
+# 1. Node.js ve npm kurulu mu kontrol edin
+node -v
+npm -v
+
+# Eğer kurulu değilse:
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+apt-get install -y nodejs
+
+# 2. Git kurulu mu kontrol edin
+git --version
+
+# Eğer kurulu değilse:
+apt-get install -y git
+
+# 3. Proje klasörü var mı kontrol edin
+ls -la /root/syncarch-project || ls -la /root/syncarch* || ls -la /var/www/
+
+# Eğer proje klasörü yoksa, yeni bir yerden çekin:
+cd /root
+git clone [GITHUB_REPO_URL] syncarch-project
+cd syncarch-project
+
+# VEYA eğer proje klasörü varsa sadece güncelleyin:
+cd /root/syncarch-project  # veya projenizin bulunduğu yer
+git pull origin main
+
+# 4. .env dosyasını kopyalayın (eğer yoksa)
+cp .env.example .env
+# veya elle oluşturun:
+nano .env
+# İçine Supabase bilgilerini ekleyin
+
+# 5. Bağımlılıkları yükleyin ve build edin
+npm install
+npm run build
+
+# 6. Eski dosyaları temizleyin (zaten yaptınız)
+# rm -rf /var/www/html/public_html/*
+
+# 7. Yeni dosyaları kopyalayın
+cp -r dist/* /var/www/html/public_html/
+
+# 8. İzinleri ayarlayın
+chmod -R 755 /var/www/html/public_html
+find /var/www/html/public_html -type f -exec chmod 644 {} \;
+
+# 9. Test edin
+ls -la /var/www/html/public_html/
+curl -I https://syncarch.online
+
+# Başarılı! 🎉

@@ -1,0 +1,62 @@
+====================================
+VPS'DE ÇALIŞTIRIN (root@srv898492)
+====================================
+
+# 1. Proje klasörü var mı kontrol edin
+ls -la /root/is-takip-app
+
+# Eğer klasör yoksa klonlayın:
+cd /root
+git clone https://github.com/icedringg-code/is-takip-app.git
+cd is-takip-app
+
+# Eğer klasör varsa sadece güncelleyin:
+cd /root/is-takip-app
+git pull origin main
+
+# 2. .env dosyasını kontrol edin (Supabase bilgileri olmalı)
+cat .env
+
+# Eğer .env yoksa oluşturun:
+nano .env
+# Şu bilgileri ekleyin:
+# VITE_SUPABASE_URL=your-supabase-url
+# VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+# Ctrl+X, Y, Enter ile kaydedin
+
+# 3. Node.js ve npm kurulu mu kontrol edin
+node -v
+npm -v
+
+# Eğer kurulu değilse:
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+apt-get install -y nodejs
+
+# 4. Bağımlılıkları yükleyin
+npm install
+
+# 5. Build edin
+npm run build
+
+# 6. Dosyaları kopyalayın (public_html zaten temizlenmiş)
+cp -r dist/* /var/www/html/public_html/
+
+# 7. İzinleri ayarlayın
+chmod -R 755 /var/www/html/public_html
+find /var/www/html/public_html -type f -exec chmod 644 {} \;
+
+# 8. Kontrol edin
+ls -la /var/www/html/public_html/
+
+# 9. Test edin
+curl -I https://syncarch.online
+
+====================================
+BAŞARILI! 🎉
+Site güncellenmiş olmalı.
+====================================
+
+NOTLAR:
+- Eğer git pull çalışmazsa: git reset --hard origin/main
+- Eğer npm install hatası verirse: rm -rf node_modules package-lock.json && npm install
+- Eğer .env yoksa Supabase bilgilerini eklemeyi unutmayın

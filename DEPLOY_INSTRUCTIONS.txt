@@ -1,0 +1,50 @@
+VPS DEPLOYMENT INSTRUCTIONS
+===========================
+
+1. VPS'te dizini hazırla:
+   cd /var/www/is-takip
+   rm -rf *
+
+2. Bu sunucudan dosyaları indirmek için (burası Claude Code sunucusu):
+   
+   Yöntem A - Eğer VPS'ten bu sunucuya erişim varsa:
+   scp -r root@<bu_sunucu_ip>:/tmp/cc-agent/60856901/project/dist/* /var/www/is-takip/
+
+   Yöntem B - Python HTTP server kullan:
+   
+   Bu sunucuda (Claude Code):
+   cd /tmp/cc-agent/60856901/project/dist
+   python3 -m http.server 8000
+   
+   VPS'te:
+   cd /var/www/is-takip
+   wget -r -np -nH --cut-dirs=1 http://<bu_sunucu_ip>:8000/
+   
+   Yöntem C - Manuel olarak:
+   1. Dist klasörünü .tar.gz olarak indir
+   2. Windows'a kaydet
+   3. VPS'e yükle
+   4. Extract et
+
+3. İzinleri ayarla:
+   cd /var/www/is-takip
+   chown -R www-data:www-data .
+   chmod -R 755 .
+
+4. Nginx'i test et ve yeniden yükle:
+   nginx -t
+   systemctl reload nginx
+
+5. Siteyi kontrol et:
+   https://syncarch.app
+
+DIST İÇERİĞİ:
+=============
+total 12K
+drwxr-xr-x 4 root root  140 Nov 29 22:04 .
+drwxr-xr-x 8 root root 1.2K Nov 29 22:05 ..
+drwxr-xr-x 2 root root  120 Nov 29 22:04 assets
+drwxr-xr-x 2 root root   80 Nov 29 22:04 icons
+-rw-r--r-- 1 root root 2.1K Nov 29 22:04 index.html
+-rw-r--r-- 1 root root 2.2K Nov 29 22:04 manifest.json
+-rw-r--r-- 1 root root 2.0K Nov 29 22:04 sw.js

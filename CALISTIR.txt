@@ -1,0 +1,46 @@
+╔════════════════════════════════════════════════════════════╗
+║                                                            ║
+║         SyncArch VPS Otomatik Kurulum                      ║
+║                                                            ║
+╚════════════════════════════════════════════════════════════╝
+
+TEK KOMUT İLE KURULUM:
+=======================
+
+Terminalinizde bu komutu çalıştırın:
+
+    ./auto-deploy-vps.sh
+
+Bu komut:
+✓ Dosyaları VPS'e yükler
+✓ Tüm kurulumu otomatik yapar
+✓ Backend'i başlatır
+✓ Nginx'i yapılandırır
+✓ SSL sertifikası kurar
+
+Kurulum 5-10 dakika sürer.
+
+Sonra:
+------
+https://syncarch.xyz adresini açın ve mikrofon butonu ile
+sesli komutlar verin!
+
+
+SORUN ÇIKARSA:
+===============
+
+Eğer sshpass hatası alırsanız:
+
+Linux:
+    sudo apt-get install sshpass
+
+Mac:
+    brew install hudochenkov/sshpass/sshpass
+
+Sonra tekrar:
+    ./auto-deploy-vps.sh
+
+
+Manuel kurulum için:
+    ./upload-to-vps.sh
+    (şifre istediğinde: 00203549Rk..)

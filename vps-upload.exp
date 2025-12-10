@@ -1,0 +1,46 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+set host "31.97.78.86"
+set user "root"
+set password "00203549Rk.."
+set local_file "/tmp/cc-agent/61274276/project/vps-deploy-latest.tar.gz"
+set remote_path "/tmp/vps-deploy-latest.tar.gz"
+
+# SCP ile dosyayı yükle
+spawn scp -o StrictHostKeyChecking=no $local_file ${user}@${host}:${remote_path}
+expect {
+    "password:" {
+        send "$password\r"
+        expect eof
+    }
+    eof
+}
+
+# SSH ile extract ve deploy
+spawn ssh -o StrictHostKeyChecking=no ${user}@${host}
+expect "password:"
+send "$password\r"
+
+expect "#"
+send "cd /var/www/syncarch.xyz\r"
+
+expect "#"
+send "tar -xzf $remote_path\r"
+
+expect "#"
+send "rm $remote_path\r"
+
+expect "#"
+send "chmod -R 755 /var/www/syncarch.xyz\r"
+
+expect "#"
+send "systemctl restart nginx\r"
+
+expect "#"
+send "ls -la /var/www/syncarch.xyz | head -20\r"
+
+expect "#"
+send "exit\r"
+
+expect eof

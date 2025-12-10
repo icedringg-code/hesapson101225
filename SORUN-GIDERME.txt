@@ -1,0 +1,75 @@
+╔══════════════════════════════════════════════════════════════╗
+║         "Failed to fetch" Hatası Çözümü                     ║
+╚══════════════════════════════════════════════════════════════╝
+
+❌ SORUN: İş ekleme ve diğer işlemlerde "Failed to fetch" hatası
+
+✅ ÇÖZÜM: Backend ve Nginx yapılandırması düzeltildi
+
+═══════════════════════════════════════════════════════════════
+
+🚀 HIZLI ÇÖZÜM (ÖNERİLEN)
+
+Terminal'de:
+   ./HIZLI-DUZELTME.sh
+
+Bu script otomatik olarak:
+   ✓ Backend'i yeniden başlatır
+   ✓ Nginx yapılandırmasını düzeltir
+   ✓ API endpoint'lerini ayarlar
+   ✓ Tüm bağlantıları test eder
+
+Şifre: 00203549Rk..
+
+═══════════════════════════════════════════════════════════════
+
+🔍 MANUEL KONTROL
+
+1. VPS durumunu kontrol et:
+   ./check-vps-status.sh
+
+2. Backend çalışıyor mu?
+   ssh root@31.97.78.86
+   pm2 status
+   pm2 logs syncarch-backend
+
+3. Backend port'u dinliyor mu?
+   netstat -tlnp | grep :3001
+
+═══════════════════════════════════════════════════════════════
+
+🔧 SORUNUN NEDENLERİ
+
+1. Backend çalışmıyor olabilir
+   → pm2 start server/index.js --name syncarch-backend
+
+2. Nginx API çağrılarını yönlendirmiyor
+   → /etc/nginx/sites-available/syncarch.xyz yapılandırması eksik
+
+3. .env dosyası yanlış
+   → Database bilgileri veya port ayarları hatalı
+
+═══════════════════════════════════════════════════════════════
+
+✅ ÇÖZÜM SONRASI TEST
+
+1. https://syncarch.xyz adresini açın
+2. Giriş yapın
+3. İş ekleyin
+4. Firma ekleyin
+5. İşlem ekleyin
+
+Hepsi çalışmalı!
+
+═══════════════════════════════════════════════════════════════
+
+📞 DESTEK
+
+Hala sorun varsa:
+   ssh root@31.97.78.86
+   cd /var/www/syncarch-is-takip
+   pm2 logs syncarch-backend --lines 50
+
+Log'ları inceleyin ve backend hatalarını kontrol edin.
+
+═══════════════════════════════════════════════════════════════

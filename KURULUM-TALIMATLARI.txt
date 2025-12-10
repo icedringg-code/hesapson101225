@@ -1,0 +1,25 @@
+╔══════════════════════════════════════════════════════════════╗
+║         SyncArch İş Takip - VPS Güncelleme Talimatları      ║
+╚══════════════════════════════════════════════════════════════╝
+
+📦 HAZIR DOSYALAR:
+   • vps-update.tar.gz (565 KB)
+
+🔧 YAPILAN DÜZELTMELER:
+   ✓ İş ekleme hatası düzeltildi
+   ✓ API URL yapılandırması optimize edildi
+   ✓ Tüm servisler güncellendi
+   ✓ contract_currency alanı eklendi
+
+═══════════════════════════════════════════════════════════════
+
+🚀 OTOMATIK YÜKLEME
+
+Terminal'de:
+   ./OTOMATIK-YUKLE.sh
+
+Şifre: 00203549Rk..
+
+═══════════════════════════════════════════════════════════════
+
+✅ Site: https://syncarch.xyz

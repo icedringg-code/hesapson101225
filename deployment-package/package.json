@@ -1,0 +1,16 @@
+{
+  "name": "syncarch-is-takip",
+  "version": "1.2.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "multer": "^1.4.5-lts.1",
+    "form-data": "^4.0.0",
+    "node-fetch": "^3.3.2"
+  }
+}
