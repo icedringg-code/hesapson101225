@@ -5,7 +5,7 @@
 
 set -e
 
-DOMAIN="syncarch.xyz"
+DOMAIN="syncarch.online"
 VPS_USER="root"
 VPS_HOST="31.97.78.86"
 VPS_PASSWORD="00203549Rk.."
@@ -54,25 +54,25 @@ apt-get install -y nginx certbot python3-certbot-nginx -qq >> /dev/null 2>&1 || 
 
 echo "💾 Yedek alınıyor..."
 mkdir -p /var/www/backup
-if [ -d /var/www/syncarch.xyz ]; then
-    cp -r /var/www/syncarch.xyz /var/www/backup/syncarch-$(date +%Y%m%d-%H%M%S)
+if [ -d /var/www/syncarch.online ]; then
+    cp -r /var/www/syncarch.online /var/www/backup/syncarch-$(date +%Y%m%d-%H%M%S)
 fi
 
 echo "🚀 Yeni versiyon yükleniyor..."
-rm -rf /var/www/syncarch.xyz
-mkdir -p /var/www/syncarch.xyz
-cp -r /tmp/syncarch-new/. /var/www/syncarch.xyz/
+rm -rf /var/www/syncarch.online
+mkdir -p /var/www/syncarch.online
+cp -r /tmp/syncarch-new/. /var/www/syncarch.online/
 rm -rf /tmp/syncarch-new
-chmod -R 755 /var/www/syncarch.xyz
-chown -R www-data:www-data /var/www/syncarch.xyz
+chmod -R 755 /var/www/syncarch.online
+chown -R www-data:www-data /var/www/syncarch.online
 
 echo "⚙️  Nginx yapılandırılıyor..."
-cat > /etc/nginx/sites-available/syncarch.xyz << 'EOFNGINX'
+cat > /etc/nginx/sites-available/syncarch.online << 'EOFNGINX'
 server {
     listen 80;
     listen [::]:80;
-    server_name syncarch.xyz www.syncarch.xyz;
-    root /var/www/syncarch.xyz;
+    server_name syncarch.online www.syncarch.online;
+    root /var/www/syncarch.online;
     index index.html;
 
     location / {
@@ -86,14 +86,14 @@ server {
 }
 EOFNGINX
 
-ln -sf /etc/nginx/sites-available/syncarch.xyz /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/syncarch.online /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 
 echo "🔄 Nginx yeniden başlatılıyor..."
 nginx -t && systemctl restart nginx
 
 echo "🔒 HTTPS kuruluyor (Let's Encrypt)..."
-certbot --nginx -d syncarch.xyz -d www.syncarch.xyz --non-interactive --agree-tos --email admin@syncarch.xyz --redirect || echo "⚠️  SSL kurulumu devam ediyor..."
+certbot --nginx -d syncarch.online -d www.syncarch.online --non-interactive --agree-tos --email admin@syncarch.online --redirect || echo "⚠️  SSL kurulumu devam ediyor..."
 
 echo "🧹 Temizlik..."
 rm -f /tmp/dist.*
@@ -102,12 +102,12 @@ echo ""
 echo "════════════════════════════════════════════════════════════"
 echo "✅ DEPLOYMENT TAMAMLANDI!"
 echo "════════════════════════════════════════════════════════════"
-echo "🌐 Site       : https://syncarch.xyz"
+echo "🌐 Site       : https://syncarch.online"
 echo "🔒 HTTPS      : Aktif"
-echo "📁 Dizin      : /var/www/syncarch.xyz"
+echo "📁 Dizin      : /var/www/syncarch.online"
 echo "════════════════════════════════════════════════════════════"
 echo ""
-ls -lh /var/www/syncarch.xyz | head -20
+ls -lh /var/www/syncarch.online | head -20
 
 EOFVPS
 )
