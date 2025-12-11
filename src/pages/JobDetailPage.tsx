@@ -649,7 +649,7 @@ export default function JobDetailPage({ jobId, onBack, onCompanyClick }: JobDeta
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="font-semibold text-gray-800 text-lg">{employer.name}</h4>
-                            <div className="grid grid-cols-4 gap-4 mt-3">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mt-3">
                               <div>
                                 <p className="text-xs text-gray-500">Gelir</p>
                                 <p className="text-sm font-medium text-green-600">
@@ -755,7 +755,7 @@ export default function JobDetailPage({ jobId, onBack, onCompanyClick }: JobDeta
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="font-semibold text-gray-800 text-lg">{employee.name}</h4>
-                            <div className="grid grid-cols-3 gap-4 mt-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 mt-3">
                               <div>
                                 <p className="text-xs text-gray-500">Toplam Alacak</p>
                                 <p className="text-sm font-medium text-orange-600">
