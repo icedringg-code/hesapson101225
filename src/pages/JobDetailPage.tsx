@@ -649,7 +649,7 @@ export default function JobDetailPage({ jobId, onBack, onCompanyClick }: JobDeta
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="font-semibold text-gray-800 text-lg">{employer.name}</h4>
-                            <div className="grid grid-cols-5 gap-4 mt-3">
+                            <div className="grid grid-cols-4 gap-4 mt-3">
                               <div>
                                 <p className="text-xs text-gray-500">Gelir</p>
                                 <p className="text-sm font-medium text-green-600">
@@ -660,12 +660,6 @@ export default function JobDetailPage({ jobId, onBack, onCompanyClick }: JobDeta
                                 <p className="text-xs text-gray-500">Gider</p>
                                 <p className="text-sm font-medium text-red-600">
                                   {formatCurrency(employer.employerExpense || 0)}
-                                </p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Nakit Ödeme</p>
-                                <p className="text-sm font-medium text-blue-600">
-                                  {formatCurrency(employer.cashPayments || 0)}
                                 </p>
                               </div>
                               <div>
