@@ -511,7 +511,12 @@ export default function CompanyDetailPage({ companyId, jobId, onBack }: CompanyD
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {transactions.map((transaction) => (
+                  {transactions.filter(t => {
+                    if (company.type === 'Çalışan' && t.note === 'Ödeme Yapıldı') {
+                      return false;
+                    }
+                    return true;
+                  }).map((transaction) => (
                     <tr key={transaction.id} className="hover:bg-gray-50">
                       <td className="px-4 py-3 text-sm text-gray-600">
                         {formatDate(transaction.date)}
