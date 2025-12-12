@@ -117,6 +117,37 @@ export async function createEmployeeReceivable(data: {
   return transaction;
 }
 
+export async function createEmployeeIncome(data: {
+  jobId: string;
+  companyId: string;
+  amount: number;
+  description: string;
+  date: string;
+}): Promise<Transaction> {
+  const userId = await getUserId();
+
+  const { data: transaction, error } = await supabase
+    .from('transactions')
+    .insert({
+      job_id: data.jobId,
+      company_id: data.companyId,
+      performed_by_id: data.companyId,
+      user_id: userId,
+      date: data.date,
+      description: data.description,
+      income: 0,
+      expense: data.amount,
+      note: 'Çalışan Geliri',
+      gold_price: 0,
+      gold_amount: 0,
+    })
+    .select()
+    .single();
+
+  if (error) throw new Error('Failed to create transaction');
+  return transaction;
+}
+
 export async function createEmployerIncome(data: {
   jobId: string;
   companyId: string;

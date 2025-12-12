@@ -64,7 +64,11 @@ export default function CompanyDetailPage({ companyId, jobId, onBack }: CompanyD
           .filter(t => t.company_id === companyId && t.note === 'Çalışana Çek Verildi (Ödenmedi)')
           .reduce((sum, t) => sum + Number(t.check_paid_amount || 0), 0);
 
-        totalExpense = cashPayments + checkPayments;
+        const employeeIncome = transactionsData
+          .filter(t => t.company_id === companyId && t.note === 'Çalışan Geliri')
+          .reduce((sum, t) => sum + Number(t.expense), 0);
+
+        totalExpense = cashPayments + checkPayments + employeeIncome;
       } else {
         totalIncome = transactionsData
           .filter(t => t.company_id === companyId && (t.note === 'Gelir' || t.note === 'Transfer Alındı' || t.note?.includes('Çek Ödemesi Geliri')))

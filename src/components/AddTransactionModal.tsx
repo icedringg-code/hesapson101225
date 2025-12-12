@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { getJobCompanies } from '../services/companies';
 import {
   createEmployeeReceivable,
+  createEmployeeIncome,
   createEmployerIncome,
   createEmployerExpense,
   createPaymentToEmployee,
@@ -22,7 +23,7 @@ interface AddTransactionModalProps {
   onSuccess: () => void;
 }
 
-type TransactionType = 'employee_receivable' | 'employer_income' | 'employer_expense' | 'payment_to_employee' | 'transfer_between_employers' | 'paid_with_received_check';
+type TransactionType = 'employee_receivable' | 'employee_income' | 'employer_income' | 'employer_expense' | 'payment_to_employee' | 'transfer_between_employers' | 'paid_with_received_check';
 
 export default function AddTransactionModal({ jobId, onClose, onSuccess }: AddTransactionModalProps) {
   const [transactionType, setTransactionType] = useState<TransactionType>('employee_receivable');
@@ -162,6 +163,20 @@ export default function AddTransactionModal({ jobId, onClose, onSuccess }: AddTr
             date,
             goldPrice: 0,
             goldAmount: 0,
+          });
+          break;
+
+        case 'employee_income':
+          if (!selectedCompanyId) {
+            setError('Çalışan seçin');
+            return;
+          }
+          await createEmployeeIncome({
+            jobId,
+            companyId: selectedCompanyId,
+            amount: amountNum,
+            description: description.trim(),
+            date,
           });
           break;
 
@@ -356,6 +371,7 @@ export default function AddTransactionModal({ jobId, onClose, onSuccess }: AddTr
 
   const transactionTypes = [
     { value: 'employee_receivable' as const, label: 'Çalışan Alacağı' },
+    { value: 'employee_income' as const, label: 'Çalışan Geliri' },
     { value: 'employer_income' as const, label: 'İşveren Geliri' },
     { value: 'employer_expense' as const, label: 'İşveren Harcaması' },
     { value: 'payment_to_employee' as const, label: 'Çalışana Ödeme' },
@@ -408,7 +424,7 @@ export default function AddTransactionModal({ jobId, onClose, onSuccess }: AddTr
             </select>
           </div>
 
-          {transactionType === 'employee_receivable' && (
+          {(transactionType === 'employee_receivable' || transactionType === 'employee_income') && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Çalışan

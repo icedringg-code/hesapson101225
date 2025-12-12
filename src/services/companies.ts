@@ -58,7 +58,11 @@ function calculateCompanyStats(
       .filter((t) => t.note === 'Çalışana Çek Verildi (Ödenmedi)')
       .reduce((sum, t) => sum + Number(t.check_paid_amount || 0), 0);
 
-    const paymentsMade = cashPaymentsMade + checkPaymentsMade;
+    const employeeIncome = companyTransactions
+      .filter((t) => t.note === 'Çalışan Geliri')
+      .reduce((sum, t) => sum + Number(t.expense), 0);
+
+    const paymentsMade = cashPaymentsMade + checkPaymentsMade + employeeIncome;
 
     const receivable = totalReceivable - paymentsMade;
     let status = 'Dengede';
